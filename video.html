@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+<meta charset="UTF-8">
+<title>مشاهده ویدئو</title>
+<link href="https://fonts.googleapis.com/css2?family=BKoodak&display=swap" rel="stylesheet">
+<style>
+body {
+    font-family: 'BKoodak', Tahoma, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #000;
+    color: #fff;
+    overflow-x: hidden;
+}
+
+/* پس‌زمینه ماتریکسی کم‌رنگ */
+#matrix {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+/* المان‌های پاسارگاد */
+.pasargad {
+    position: absolute;
+    width: 80px;
+    height: 200px;
+    top: 60px;
+    opacity: 0.7;
+}
+.pasargad.left { left: 30px; }
+.pasargad.right { right: 30px; }
+.pasargad svg { width: 100%; height: 100%; }
+
+/* هدر */
+header {
+    text-align: center;
+    padding: 30px 20px;
+    font-size: 36px;
+    font-weight: bold;
+    color: #0f0;
+    text-shadow: 0 0 8px #0f0, 0 0 12px #0f0;
+}
+
+/* بخش ویدئو */
+.video-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 50px 0;
+}
+video {
+    width: 80%;
+    border: 2px solid #0f0;
+    border-radius: 15px;
+    box-shadow: 0 0 15px #0f0, 0 0 25px #0ff;
+}
+</style>
+</head>
+<body>
+
+<canvas id="matrix"></canvas>
+
+<div class="pasargad left">
+<svg viewBox="0 0 64 200">
+  <rect x="10" y="0" width="8" height="200" fill="#0f0"/>
+  <rect x="20" y="0" width="8" height="200" fill="#0f0"/>
+  <rect x="30" y="0" width="8" height="200" fill="#0f0"/>
+</svg>
+</div>
+<div class="pasargad right">
+<svg viewBox="0 0 64 200">
+  <rect x="10" y="0" width="8" height="200" fill="#0f0"/>
+  <rect x="20" y="0" width="8" height="200" fill="#0f0"/>
+  <rect x="30" y="0" width="8" height="200" fill="#0f0"/>
+</svg>
+</div>
+
+<header>مشاهده ویدئو</header>
+
+<div class="video-container">
+<video controls>
+    <source src="sample-video.mp4" type="video/mp4">
+    مرورگر شما از پخش ویدئو پشتیبانی نمی‌کند.
+</video>
+</div>
+
+<script>
+// پس‌زمینه ماتریکسی کم‌رنگ
+const canvas = document.getElementById('matrix');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789سلامدنیافارسی';
+const fontSize = 14;
+const columns = canvas.width / fontSize;
+
+const drops = [];
+for(let x = 0; x < columns; x++) drops[x] = Math.random()*canvas.height;
+
+function draw() {
+    ctx.fillStyle = 'rgba(0,0,0,0.08)';
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+
+    ctx.fillStyle = '#0f0';
+    ctx.font = fontSize + "px monospace";
+    for(let i=0; i<drops.length; i++){
+        const text = letters[Math.floor(Math.random()*letters.length)];
+        ctx.fillText(text, i*fontSize, drops[i]*fontSize);
+        if(drops[i]*fontSize > canvas.height || Math.random() > 0.98) drops[i] = 0;
+        drops[i]++;
+    }
+}
+setInterval(draw, 50);
+</script>
+
+</body>
+</html>
